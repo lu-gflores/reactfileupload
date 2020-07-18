@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const uuidv4 = require('uuid/v4');
 const router = express.Router();
 
-const DIR = './public';
+const DIR = './public/';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, DIR);
     },
     filename:(req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        const fileName = file.originalname.toLowerCase().split('').join('-');
         cb(null, uuidv4() + '-' + fileName)
     }
 });
@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 let upload = multer ({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
             cb(null, true);
         } else {
             cb(null, false);

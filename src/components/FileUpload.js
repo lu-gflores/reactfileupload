@@ -1,6 +1,29 @@
-import React from 'react'
+import React, { Component } from 'react'
+import axios from 'axios';
 
-const FileUpload = () => {
+export default class FileUpload extends Component{
+    constructor(props) {
+        super(props);
+        this.onFileChange = this.onFileChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.state = {
+            profileImg: ''
+        }
+    }
+    onFileChange(e) {
+        this.setState({ profileImg: e.target.files[0]})
+    }
+    onSubmit(e) {
+        e.preventDefault()
+        const formData = new FormData()
+        formData.append('profileImg', this.state.profileImg)
+        axios.post("http://localhost:4000/api/user-profile", formData, {
+        }).then(res => {
+            console.log(res)
+        })
+    }
+
+    render(){
     return (
         <>
         <div className="container">
@@ -8,7 +31,7 @@ const FileUpload = () => {
                 <form>
                     <h2>React File Upload</h2>
                     <div className="form-group">
-                        <input type="file" />
+                        <input type="file" onChange={this.onFileChange} />
                     </div>
                     <div className="form-group">
                         <button className="btn btn-primary" type="submit">Upload File</button>
@@ -19,5 +42,5 @@ const FileUpload = () => {
         </>
     )
 }
+}
 
-export default FileUpload
